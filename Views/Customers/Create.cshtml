@@ -1,0 +1,174 @@
+@model VehiclePartsManagementSystem.Models.Customer
+
+@{
+    ViewData["Title"] = "Customer Registration";
+}
+
+<div class="container">
+
+    <div class="card shadow-lg border-0 rounded-4">
+
+        <div class="card-body p-5">
+
+            <div class="text-center mb-4">
+
+                <h1 class="fw-bold text-primary">
+
+                    Customer Registration
+
+                </h1>
+
+                <p class="text-muted fs-5">
+
+                    Create your customer account and manage your vehicle details
+
+                </p>
+
+            </div>
+
+            <hr />
+
+            <form asp-action="Create">
+
+                <div asp-validation-summary="ModelOnly"
+                     class="text-danger mb-3">
+                </div>
+
+                <div class="row">
+
+                    <!-- CUSTOMER NAME -->
+
+                    <div class="col-md-6 mb-4">
+
+                        <label asp-for="CustomerName"
+                               class="form-label fw-bold">
+                        </label>
+
+                        <input asp-for="CustomerName"
+                               class="form-control form-control-lg rounded-3" />
+
+                        <span asp-validation-for="CustomerName"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+                    <!-- EMAIL -->
+
+                    <div class="col-md-6 mb-4">
+
+                        <label asp-for="Email"
+                               class="form-label fw-bold">
+                        </label>
+
+                        <input asp-for="Email"
+                               class="form-control form-control-lg rounded-3"
+                               placeholder="example@email.com" />
+
+                        <span asp-validation-for="Email"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+                    <!-- PASSWORD -->
+
+                    <div class="col-md-6 mb-4">
+
+                        <label asp-for="Password"
+                               class="form-label fw-bold">
+                        </label>
+
+                        <input asp-for="Password"
+                               class="form-control form-control-lg rounded-3" />
+
+                        <span asp-validation-for="Password"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+                    <!-- PHONE -->
+
+                    <div class="col-md-6 mb-4">
+
+                        <label asp-for="Phone"
+                               class="form-label fw-bold">
+                        </label>
+
+                        <input asp-for="Phone"
+                               class="form-control form-control-lg rounded-3" />
+
+                        <span asp-validation-for="Phone"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+                    <!-- VEHICLE NUMBER -->
+
+                    <div class="col-md-6 mb-4">
+
+                        <label asp-for="VehicleNumber"
+                               class="form-label fw-bold">
+                        </label>
+
+                        <input asp-for="VehicleNumber"
+                               class="form-control form-control-lg rounded-3" />
+
+                        <span asp-validation-for="VehicleNumber"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+                    <!-- ADDRESS -->
+
+                    <div class="col-md-6 mb-4">
+
+                        <label asp-for="Address"
+                               class="form-label fw-bold">
+                        </label>
+
+                        <input asp-for="Address"
+                               class="form-control form-control-lg rounded-3" />
+
+                        <span asp-validation-for="Address"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <div class="mt-4 text-center">
+
+                    <button type="submit"
+                            class="btn btn-primary btn-lg px-5 rounded-3">
+
+                        Register Account
+
+                    </button>
+
+                    <a asp-action="Index"
+                       class="btn btn-secondary btn-lg px-5 rounded-3 ms-2">
+
+                        Back
+
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

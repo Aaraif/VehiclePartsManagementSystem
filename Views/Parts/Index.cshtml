@@ -1,223 +1,223 @@
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using VehiclePartsManagementSystem.Models;
-using VehiclePartsManagementSystem.Data;
+@model IEnumerable<VehiclePartsManagementSystem.Models.Part>
 
-public class PartsController : Controller
-{
-private readonly ApplicationDbContext _context;
+@{
+    ViewData["Title"] = "Parts Inventory";
 
-public PartsController(ApplicationDbContext context)
-{
-_context = context;
+    var userRole =
+        Context.Session.GetString("UserRole");
+
+    var userId =
+        Context.Session.GetInt32("UserId");
 }
 
-// GET: PARTS
+<div class="container py-5">
 
-public async Task<IActionResult>
-Index(string searchString)
-{
-var parts = _context.Parts
-.Include(p => p.Supplier)
-.AsQueryable();
+    <div class="d-flex justify-content-between align-items-center mb-4">
 
-if (!string.IsNullOrEmpty(searchString))
-{
-parts = parts.Where(s =>
-s.PartName.Contains(searchString));
-}
+        <div>
 
-return View(await parts.ToListAsync());
-}
+            <h1 class="display-4 fw-bold text-dark">
+                Parts Inventory
+            </h1>
 
-// GET: PARTS/Details/5
+            <p class="fs-5 text-secondary">
+                Manage and purchase vehicle spare parts
+            </p>
 
-public async Task<IActionResult>
-Details(int? id)
-{
-if (id == null)
-{
-return NotFound();
-}
+        </div>
 
-var part = await _context.Parts
-.Include(p => p.Supplier)
-.FirstOrDefaultAsync(m => m.Id == id);
+        @if (userRole == "Admin" || userRole == "Staff")
+        {
+            <a asp-action="Create"
+               class="btn btn-primary btn-lg px-4 py-3 rounded-4 shadow-sm">
 
-if (part == null)
-{
-return NotFound();
-}
+                + Add Part
 
-return View(part);
-}
+            </a>
+        }
 
-// GET: PARTS/Create
+    </div>
 
-public IActionResult Create()
-{
-ViewBag.SupplierId =
-new SelectList(_context.Suppliers,
-"Id",
-"SupplierName");
+    <!-- SUCCESS MESSAGE -->
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show rounded-4 shadow-sm mb-4"
+             role="alert">
 
-return View();
-}
+            @TempData["SuccessMessage"]
 
-// POST: PARTS/Create
+            <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert">
+            </button>
 
-[HttpPost]
-[ValidateAntiForgeryToken]
+        </div>
+    }
 
-public async Task<IActionResult>
-Create(
-[Bind("Id,PartName,Quantity,Price,SupplierId")] Part part)
-{
-if (ModelState.IsValid)
-{
-_context.Add(part);
+    <!-- SEARCH -->
 
-await _context.SaveChangesAsync();
+    <form asp-controller="Parts"
+          asp-action="Index"
+          method="get"
+          class="mb-4">
 
-TempData["SuccessMessage"] =
-"Part created successfully!";
+        <div class="row g-2">
 
-return RedirectToAction(nameof(Index));
-}
+            <div class="col-md-4">
 
-ViewBag.SupplierId =
-new SelectList(_context.Suppliers,
-"Id",
-"SupplierName",
-part.SupplierId);
+                <input type="text"
+                       name="searchString"
+                       class="form-control form-control-lg rounded-4"
+                       placeholder="Search parts by name..." />
 
-return View(part);
-}
+            </div>
 
-// GET: PARTS/Edit/5
+            <div class="col-md-2">
 
-public async Task<IActionResult>
-Edit(int? id)
-{
-if (id == null)
-{
-return NotFound();
-}
+                <button type="submit"
+                        class="btn btn-dark btn-lg rounded-4 w-100">
 
-var part = await _context.Parts.FindAsync(id);
+                    Search
 
-if (part == null)
-{
-return NotFound();
-}
+                </button>
 
-ViewBag.SupplierId =
-new SelectList(_context.Suppliers,
-"Id",
-"SupplierName",
-part.SupplierId);
+            </div>
 
-return View(part);
-}
+        </div>
 
-// POST: PARTS/Edit/5
+    </form>
 
-[HttpPost]
-[ValidateAntiForgeryToken]
+    <!-- PARTS TABLE -->
 
-public async Task<IActionResult>
-Edit(
-int? id,
-[Bind("Id,PartName,Quantity,Price,SupplierId")] Part part)
-{
-if (id != part.Id)
-{
-return NotFound();
-}
+    <div class="card border-0 shadow-lg rounded-5 p-4 mt-4">
 
-if (ModelState.IsValid)
-{
-try
-{
-_context.Update(part);
+        <div class="table-responsive">
 
-await _context.SaveChangesAsync();
-}
-catch (DbUpdateConcurrencyException)
-{
-if (!PartExists(part.Id))
-{
-return NotFound();
-}
+            <table class="table align-middle table-hover">
 
-throw;
-}
+                <thead class="table-dark">
 
-TempData["SuccessMessage"] =
-"Part updated successfully!";
+                    <tr class="fs-5">
 
-return RedirectToAction(nameof(Index));
-}
+                        <th>Part Name</th>
 
-ViewBag.SupplierId =
-new SelectList(_context.Suppliers,
-"Id",
-"SupplierName",
-part.SupplierId);
+                        <th>Quantity</th>
 
-return View(part);
-}
+                        <th>Price</th>
 
-// GET: PARTS/Delete/5
+                        <th>Supplier</th>
 
-public async Task<IActionResult>
-Delete(int? id)
-{
-if (id == null)
-{
-return NotFound();
-}
+                        <th class="text-center">
+                            Actions
+                        </th>
 
-var part = await _context.Parts
-.Include(p => p.Supplier)
-.FirstOrDefaultAsync(m => m.Id == id);
+                    </tr>
 
-if (part == null)
-{
-return NotFound();
-}
+                </thead>
 
-return View(part);
-}
+                <tbody>
 
-// POST: PARTS/Delete/5
+                    @foreach (var item in Model)
+                    {
+                        <tr class="fs-5">
 
-[HttpPost, ActionName("Delete")]
-[ValidateAntiForgeryToken]
+                            <td class="fw-semibold">
+                                @item.PartName
+                            </td>
 
-public async Task<IActionResult>
-DeleteConfirmed(int? id)
-{
-var part = await _context.Parts.FindAsync(id);
+                            <td>
 
-if (part != null)
-{
-_context.Parts.Remove(part);
-}
+                                @if (item.Quantity < 10)
+                                {
+                                    <span class="badge bg-danger fs-6">
 
-await _context.SaveChangesAsync();
+                                        Low Stock :
+                                        @item.Quantity
 
-TempData["SuccessMessage"] =
-"Part deleted successfully!";
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-success fs-6">
 
-return RedirectToAction(nameof(Index));
-}
+                                        @item.Quantity Available
 
-// EXISTS CHECK
+                                    </span>
+                                }
 
-private bool PartExists(int? id)
-{
-return _context.Parts.Any(e => e.Id == id);
-}
-}
+                            </td>
+
+                            <td class="fw-bold text-success">
+                                $@item.Price
+                            </td>
+
+                            <td>
+                                @(item.Supplier != null
+                                    ? item.Supplier.SupplierName
+                                    : "No Supplier")
+                            </td>
+
+                            <td>
+
+                                <div class="d-flex justify-content-center gap-2 flex-wrap">
+
+                                    <!-- DETAILS -->
+
+                                    <a asp-action="Details"
+                                       asp-route-id="@item.Id"
+                                       class="btn btn-dark rounded-4 px-3">
+
+                                        Details
+
+                                    </a>
+
+                                    <!-- BUY BUTTON -->
+                                    @if (userId != null)
+                                    {
+                                        <a asp-controller="Sales"
+                                           asp-action="Create"
+                                           asp-route-partId="@item.Id"
+                                           class="btn btn-success rounded-4 px-3">
+
+                                            Buy
+
+                                        </a>
+                                    }
+
+                                    <!-- STAFF / ADMIN ONLY -->
+                                    @if (userRole == "Admin" ||
+                                                                       userRole == "Staff")
+                                    {
+                                        <a asp-action="Edit"
+                                           asp-route-id="@item.Id"
+                                           class="btn btn-primary rounded-4 px-3">
+
+                                            Edit
+
+                                        </a>
+
+                                        <a asp-action="Delete"
+                                           asp-route-id="@item.Id"
+                                           class="btn btn-danger rounded-4 px-3">
+
+                                            Delete
+
+                                        </a>
+                                    }
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>

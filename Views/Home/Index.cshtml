@@ -18,7 +18,7 @@
 
             A modern ASP.NET Core MVC + Web API application
             for managing vehicle spare parts, suppliers,
-            stock quantity and inventory operations efficiently.
+            customers, sales invoices and inventory operations efficiently.
 
         </p>
 
@@ -30,7 +30,7 @@
 
         <!-- PARTS MODULE -->
 
-        <div class="col-lg-6">
+        <div class="col-lg-4">
 
             <div class="card border-0 shadow-lg rounded-5 h-100">
 
@@ -48,8 +48,8 @@
 
                     <p class="text-muted mt-4 fs-5">
 
-                        Manage vehicle spare parts, pricing,
-                        inventory stock quantity and supplier allocation efficiently.
+                        Manage vehicle spare parts,
+                        stock quantity and pricing efficiently.
 
                     </p>
 
@@ -57,7 +57,7 @@
                        asp-action="Index"
                        class="btn btn-primary btn-lg rounded-pill px-5 mt-4 shadow-sm">
 
-                        Open Parts Module
+                        Open Parts
 
                     </a>
 
@@ -69,7 +69,7 @@
 
         <!-- SUPPLIERS MODULE -->
 
-        <div class="col-lg-6">
+        <div class="col-lg-4">
 
             <div class="card border-0 shadow-lg rounded-5 h-100">
 
@@ -81,14 +81,14 @@
 
                     <h2 class="fw-bold mt-4">
 
-                        Suppliers Management
+                        Suppliers
 
                     </h2>
 
                     <p class="text-muted mt-4 fs-5">
 
-                        Store supplier records, contact information,
-                        addresses and maintain supplier relationships.
+                        Store supplier records,
+                        contacts and addresses professionally.
 
                     </p>
 
@@ -96,7 +96,46 @@
                        asp-action="Index"
                        class="btn btn-dark btn-lg rounded-pill px-5 mt-4 shadow-sm">
 
-                        Open Suppliers Module
+                        Open Suppliers
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- SALES MODULE -->
+
+        <div class="col-lg-4">
+
+            <div class="card border-0 shadow-lg rounded-5 h-100">
+
+                <div class="card-body text-center p-5">
+
+                    <div style="font-size:75px;">
+                        💰
+                    </div>
+
+                    <h2 class="fw-bold mt-4">
+
+                        Sales & Invoices
+
+                    </h2>
+
+                    <p class="text-muted mt-4 fs-5">
+
+                        Generate invoices,
+                        manage customer sales and revenue tracking.
+
+                    </p>
+
+                    <a asp-controller="Sales"
+                       asp-action="Index"
+                       class="btn btn-success btn-lg rounded-pill px-5 mt-4 shadow-sm">
+
+                        Open Sales
 
                     </a>
 
@@ -116,23 +155,25 @@
 
             <h2 class="fw-bold text-dark">
 
-                Dashboard Statistics
+                Financial Dashboard & Reports
 
             </h2>
 
             <p class="text-secondary fs-5">
 
-                Overview of current inventory and supplier records.
+                Real-time analytics for sales, revenue and inventory management.
 
             </p>
 
         </div>
 
+        <!-- FIRST ROW -->
+
         <div class="row g-4">
 
             <!-- TOTAL PARTS -->
 
-            <div class="col-md-4">
+            <div class="col-md-3">
 
                 <div class="card border-0 shadow-sm rounded-5 text-center p-4 h-100">
 
@@ -158,7 +199,7 @@
 
             <!-- TOTAL SUPPLIERS -->
 
-            <div class="col-md-4">
+            <div class="col-md-3">
 
                 <div class="card border-0 shadow-sm rounded-5 text-center p-4 h-100">
 
@@ -182,9 +223,67 @@
 
             </div>
 
+            <!-- TOTAL CUSTOMERS -->
+
+            <div class="col-md-3">
+
+                <div class="card border-0 shadow-sm rounded-5 text-center p-4 h-100">
+
+                    <div style="font-size:60px;">
+                        👥
+                    </div>
+
+                    <h1 class="fw-bold mt-3 text-info">
+
+                        @ViewBag.TotalCustomers
+
+                    </h1>
+
+                    <p class="text-muted fs-5">
+
+                        Total Customers
+
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- TOTAL SALES -->
+
+            <div class="col-md-3">
+
+                <div class="card border-0 shadow-sm rounded-5 text-center p-4 h-100">
+
+                    <div style="font-size:60px;">
+                        🧾
+                    </div>
+
+                    <h1 class="fw-bold mt-3 text-success">
+
+                        @ViewBag.TotalSales
+
+                    </h1>
+
+                    <p class="text-muted fs-5">
+
+                        Total Sales
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- SECOND ROW -->
+
+        <div class="row g-4 mt-1">
+
             <!-- TOTAL STOCK -->
 
-            <div class="col-md-4">
+            <div class="col-md-3">
 
                 <div class="card border-0 shadow-sm rounded-5 text-center p-4 h-100">
 
@@ -200,7 +299,169 @@
 
                     <p class="text-muted fs-5">
 
-                        Total Stock Quantity
+                        Total Stock
+
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- TOTAL REVENUE -->
+
+            <div class="col-md-3">
+
+                <div class="card border-0 shadow-sm rounded-5 text-center p-4 h-100">
+
+                    <div style="font-size:60px;">
+                        💵
+                    </div>
+
+                    <h1 class="fw-bold mt-3 text-success">
+
+                        $@ViewBag.TotalRevenue
+
+                    </h1>
+
+                    <p class="text-muted fs-5">
+
+                        Total Revenue
+
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- TODAY REVENUE -->
+
+            <div class="col-md-3">
+
+                <div class="card border-0 shadow-sm rounded-5 text-center p-4 h-100">
+
+                    <div style="font-size:60px;">
+                        📅
+                    </div>
+
+                    <h1 class="fw-bold mt-3 text-primary">
+
+                        $@ViewBag.TodayRevenue
+
+                    </h1>
+
+                    <p class="text-muted fs-5">
+
+                        Today Revenue
+
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- MONTHLY REVENUE -->
+
+            <div class="col-md-3">
+
+                <div class="card border-0 shadow-sm rounded-5 text-center p-4 h-100">
+
+                    <div style="font-size:60px;">
+                        📈
+                    </div>
+
+                    <h1 class="fw-bold mt-3 text-warning">
+
+                        $@ViewBag.MonthlyRevenue
+
+                    </h1>
+
+                    <p class="text-muted fs-5">
+
+                        Monthly Revenue
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- THIRD ROW -->
+
+        <div class="row g-4 mt-1">
+
+            <!-- YEARLY REVENUE -->
+
+            <div class="col-md-4">
+
+                <div class="card border-0 shadow-sm rounded-5 text-center p-4 h-100">
+
+                    <div style="font-size:60px;">
+                        🏆
+                    </div>
+
+                    <h1 class="fw-bold mt-3 text-success">
+
+                        $@ViewBag.YearlyRevenue
+
+                    </h1>
+
+                    <p class="text-muted fs-5">
+
+                        Yearly Revenue
+
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- TOP CUSTOMER -->
+
+            <div class="col-md-4">
+
+                <div class="card border-0 shadow-sm rounded-5 text-center p-4 h-100">
+
+                    <div style="font-size:60px;">
+                        👑
+                    </div>
+
+                    <h1 class="fw-bold mt-3 text-dark">
+
+                        @ViewBag.TopCustomer
+
+                    </h1>
+
+                    <p class="text-muted fs-5">
+
+                        Top Customer
+
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- LOW STOCK -->
+
+            <div class="col-md-4">
+
+                <div class="card border-0 shadow-sm rounded-5 text-center p-4 h-100">
+
+                    <div style="font-size:60px;">
+                        ⚠️
+                    </div>
+
+                    <h1 class="fw-bold mt-3 text-danger">
+
+                        @ViewBag.LowStockCount
+
+                    </h1>
+
+                    <p class="text-muted fs-5">
+
+                        Low Stock Items
 
                     </p>
 
@@ -212,7 +473,7 @@
 
     </div>
 
-    <!-- TECHNOLOGY SECTION -->
+    <!-- TECHNOLOGIES -->
 
     <div class="mt-5">
 

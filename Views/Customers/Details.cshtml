@@ -1,0 +1,179 @@
+@model VehiclePartsManagementSystem.Models.Customer
+
+@{
+    ViewData["Title"] = "Customer Details";
+}
+
+<div class="container">
+
+    <div class="card shadow-lg border-0 rounded-4">
+
+        <div class="card-body p-5">
+
+            <div class="d-flex justify-content-between align-items-center mb-4">
+
+                <h1 class="fw-bold text-primary">
+                    Customer Details
+                </h1>
+
+                <span class="badge bg-success fs-6 px-3 py-2">
+                    Active Customer
+                </span>
+
+            </div>
+
+            <hr />
+
+            <div class="row mt-4">
+
+                <div class="col-md-6 mb-4">
+
+                    <label class="fw-bold text-secondary">
+                        Customer Name
+                    </label>
+
+                    <div class="fs-5">
+                        @Model.CustomerName
+                    </div>
+
+                </div>
+
+                <div class="col-md-6 mb-4">
+
+                    <label class="fw-bold text-secondary">
+                        Phone Number
+                    </label>
+
+                    <div class="fs-5">
+                        @Model.Phone
+                    </div>
+
+                </div>
+
+                <div class="col-md-6 mb-4">
+
+                    <label class="fw-bold text-secondary">
+                        Vehicle Number
+                    </label>
+
+                    <div class="fs-5">
+                        @Model.VehicleNumber
+                    </div>
+
+                </div>
+
+                <div class="col-md-6 mb-4">
+
+                    <label class="fw-bold text-secondary">
+                        Address
+                    </label>
+
+                    <div class="fs-5">
+                        @Model.Address
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- PURCHASE HISTORY -->
+
+            <div class="mt-5">
+
+                <h2 class="fw-bold text-primary mb-4">
+
+                    Purchase History
+
+                </h2>
+
+                @if (((List<VehiclePartsManagementSystem.Models.Sale>)
+                    ViewBag.PurchaseHistory).Count > 0)
+                {
+                    <div class="table-responsive">
+
+                        <table class="table table-hover align-middle">
+
+                            <thead class="table-dark">
+
+                                <tr>
+
+                                    <th>Vehicle Part</th>
+
+                                    <th>Quantity</th>
+
+                                    <th>Total Amount</th>
+
+                                    <th>Sale Date</th>
+
+                                </tr>
+
+                            </thead>
+
+                            <tbody>
+
+                                @foreach (var sale in
+                               (List<VehiclePartsManagementSystem.Models.Sale>)
+                               ViewBag.PurchaseHistory)
+                                {
+                                    <tr>
+
+                                        <td class="fw-semibold">
+                                            @sale.Part?.PartName
+                                        </td>
+
+                                        <td>
+                                            @sale.Quantity
+                                        </td>
+
+                                        <td class="text-success fw-bold">
+                                            $@sale.TotalAmount
+                                        </td>
+
+                                        <td>
+                                            @sale.SaleDate.ToShortDateString()
+                                        </td>
+
+                                    </tr>
+                                }
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-info rounded-4">
+
+                        No purchase history available for this customer.
+
+                    </div>
+                }
+
+            </div>
+
+            <div class="mt-4">
+
+                <a asp-action="Edit"
+                   asp-route-id="@Model.Id"
+                   class="btn btn-warning px-4 py-2 rounded-3">
+
+                    Edit Customer
+
+                </a>
+
+                <a asp-action="Index"
+                   class="btn btn-secondary px-4 py-2 rounded-3 ms-2">
+
+                    Back
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

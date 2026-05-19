@@ -1,0 +1,130 @@
+﻿@model IEnumerable<VehiclePartsManagementSystem.Models.Customer>
+
+@{
+    ViewData["Title"] = "Admin Panel";
+}
+
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+
+            <h1 class="fw-bold text-danger">
+                Admin Control Panel
+            </h1>
+
+            <p class="text-muted">
+                Manage users, staff and system roles
+            </p>
+
+        </div>
+
+        <span class="badge bg-dark fs-6 px-4 py-3">
+            ADMIN ACCESS
+        </span>
+
+    </div>
+
+    <div class="card shadow-lg border-0 rounded-4">
+
+        <div class="card-body p-4">
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle">
+
+                    <thead class="table-dark">
+
+                        <tr>
+
+                            <th>ID</th>
+
+                            <th>Name</th>
+
+                            <th>Email</th>
+
+                            <th>Phone</th>
+
+                            <th>Role</th>
+
+                            <th class="text-center">
+                                Actions
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+
+                                <td>
+                                    @item.Id
+                                </td>
+
+                                <td class="fw-semibold">
+                                    @item.CustomerName
+                                </td>
+
+                                <td>
+                                    @item.Email
+                                </td>
+
+                                <td>
+                                    @item.Phone
+                                </td>
+
+                                <td>
+
+                                    @if (item.Role == "Admin")
+                                    {
+                                        <span class="badge bg-danger">
+                                            Admin
+                                        </span>
+                                    }
+                                    else if (item.Role == "Staff")
+                                    {
+                                        <span class="badge bg-warning text-dark">
+                                            Staff
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary">
+                                            Customer
+                                        </span>
+                                    }
+
+                                </td>
+
+                                <td class="text-center">
+
+                                    <a asp-controller="Customers"
+                                       asp-action="Edit"
+                                       asp-route-id="@item.Id"
+                                       class="btn btn-warning btn-sm rounded-3">
+
+                                        Manage Role
+
+                                    </a>
+
+                                </td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

@@ -13,6 +13,29 @@ public class PartsController : Controller
         _context = context;
     }
 
+    /* AUTHORIZATION CHECK */
+
+    private bool IsStaffOrAdmin()
+    {
+        var role =
+            HttpContext.Session.GetString("UserRole");
+
+        return role == "Admin" ||
+               role == "Staff";
+    }
+
+    /* ACCESS DENIED */
+
+    private IActionResult AccessDenied()
+    {
+        TempData["SuccessMessage"] =
+            "Access denied! Staff or Admin only.";
+
+        return RedirectToAction(
+            "Index",
+            "Home");
+    }
+
     // GET: PARTS
 
     public async Task<IActionResult> Index(string searchString)
@@ -55,6 +78,11 @@ public class PartsController : Controller
 
     public IActionResult Create()
     {
+        if (!IsStaffOrAdmin())
+        {
+            return AccessDenied();
+        }
+
         ViewBag.SupplierId =
             new SelectList(_context.Suppliers,
             "Id",
@@ -71,6 +99,11 @@ public class PartsController : Controller
     public async Task<IActionResult> Create(
         [Bind("Id,PartName,Quantity,Price,SupplierId")] Part part)
     {
+        if (!IsStaffOrAdmin())
+        {
+            return AccessDenied();
+        }
+
         if (ModelState.IsValid)
         {
             _context.Add(part);
@@ -96,6 +129,11 @@ public class PartsController : Controller
 
     public async Task<IActionResult> Edit(int? id)
     {
+        if (!IsStaffOrAdmin())
+        {
+            return AccessDenied();
+        }
+
         if (id == null)
         {
             return NotFound();
@@ -126,6 +164,11 @@ public class PartsController : Controller
         int? id,
         [Bind("Id,PartName,Quantity,Price,SupplierId")] Part part)
     {
+        if (!IsStaffOrAdmin())
+        {
+            return AccessDenied();
+        }
+
         if (id != part.Id)
         {
             return NotFound();
@@ -168,6 +211,11 @@ public class PartsController : Controller
 
     public async Task<IActionResult> Delete(int? id)
     {
+        if (!IsStaffOrAdmin())
+        {
+            return AccessDenied();
+        }
+
         if (id == null)
         {
             return NotFound();
@@ -192,6 +240,11 @@ public class PartsController : Controller
 
     public async Task<IActionResult> DeleteConfirmed(int? id)
     {
+        if (!IsStaffOrAdmin())
+        {
+            return AccessDenied();
+        }
+
         var part = await _context.Parts.FindAsync(id);
 
         if (part != null)

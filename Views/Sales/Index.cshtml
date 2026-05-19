@@ -1,0 +1,167 @@
+@model IEnumerable<VehiclePartsManagementSystem.Models.Sale>
+
+@{
+    ViewData["Title"] = "Sales";
+}
+
+<div class="container">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+
+            <h1 class="fw-bold text-success">
+                Sales Management
+            </h1>
+
+            <p class="text-muted">
+                Manage customer sales invoices and transactions
+            </p>
+
+        </div>
+
+        <a asp-action="Create"
+           class="btn btn-success btn-lg rounded-3 shadow-sm">
+
+            + Create Invoice
+
+        </a>
+
+    </div>
+
+    <!-- TABLE -->
+
+    <div class="card border-0 shadow-lg rounded-4">
+
+        <div class="card-body p-4">
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle">
+
+                    <thead class="table-dark">
+
+                        <tr>
+
+                            <th>Customer</th>
+
+                            <th>Part</th>
+
+                            <th>Quantity</th>
+
+                            <th>Total Amount</th>
+
+                            <th>Discount</th>
+
+                            <th>Final Amount</th>
+
+                            <th>Sale Date</th>
+
+                            <th class="text-center">
+                                Actions
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+
+                                <td class="fw-semibold">
+                                    @item.Customer?.CustomerName
+                                </td>
+
+                                <td>
+                                    @item.Part?.PartName
+                                </td>
+
+                                <td>
+                                    @item.Quantity
+                                </td>
+
+                                <!-- TOTAL -->
+
+                                <td class="fw-bold">
+                                    $@item.TotalAmount
+                                </td>
+
+                                <!-- DISCOUNT -->
+
+                                <td>
+
+                                    @if (item.DiscountAmount > 0)
+                                    {
+                                        <span class="badge bg-success fs-6">
+
+                                            10% OFF
+                                            ($@item.DiscountAmount)
+
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">
+                                            No Discount
+                                        </span>
+                                    }
+
+                                </td>
+
+                                <!-- FINAL -->
+
+                                <td class="fw-bold text-success">
+
+                                    $@item.FinalAmount
+
+                                </td>
+
+                                <td>
+                                    @item.SaleDate.ToShortDateString()
+                                </td>
+
+                                <td class="text-center">
+
+                                    <a asp-action="Details"
+                                       asp-route-id="@item.Id"
+                                       class="btn btn-info btn-sm rounded-3 me-1">
+
+                                        Details
+
+                                    </a>
+
+                                    <a asp-action="Edit"
+                                       asp-route-id="@item.Id"
+                                       class="btn btn-warning btn-sm rounded-3 me-1">
+
+                                        Edit
+
+                                    </a>
+
+                                    <a asp-action="Delete"
+                                       asp-route-id="@item.Id"
+                                       class="btn btn-danger btn-sm rounded-3">
+
+                                        Delete
+
+                                    </a>
+
+                                </td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

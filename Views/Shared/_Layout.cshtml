@@ -64,10 +64,28 @@
                     box-shadow: none;
                 }
 
+            /* USER BADGE */
+
+            .user-badge {
+                background: rgba(255,255,255,0.15);
+                padding: 8px 16px;
+                border-radius: 12px;
+                color: white;
+                margin-left: 20px;
+                font-size: 15px;
+                font-weight: 600;
+            }
+
             /* MAIN CONTAINER */
 
             .container-custom {
                 padding: 50px;
+            }
+
+            /* ALERT */
+
+            .alert {
+                font-size: 17px;
             }
 
             /* FOOTER */
@@ -98,6 +116,12 @@
                     margin-left: 0;
                     margin-top: 10px;
                 }
+
+                .user-badge {
+                    margin-top: 15px;
+                    margin-left: 0;
+                    display: inline-block;
+                }
             }
 
     </style>
@@ -105,6 +129,11 @@
 </head>
 
 <body>
+
+    @{
+        var userName = Context.Session.GetString("UserName");
+        var userRole = Context.Session.GetString("UserRole");
+    }
 
     <!-- NAVBAR -->
 
@@ -141,7 +170,9 @@
                 <div class="collapse navbar-collapse"
                      id="navbarNav">
 
-                    <ul class="navbar-nav ms-auto">
+                    <ul class="navbar-nav ms-auto align-items-lg-center">
+
+                        <!-- HOME -->
 
                         <li class="nav-item">
 
@@ -155,6 +186,8 @@
 
                         </li>
 
+                        <!-- PARTS -->
+
                         <li class="nav-item">
 
                             <a class="nav-link"
@@ -166,6 +199,8 @@
                             </a>
 
                         </li>
+
+                        <!-- SUPPLIERS -->
 
                         <li class="nav-item">
 
@@ -179,6 +214,96 @@
 
                         </li>
 
+                        <!-- CUSTOMERS -->
+
+                        <li class="nav-item">
+
+                            <a class="nav-link"
+                               asp-controller="Customers"
+                               asp-action="Index">
+
+                                Customers
+
+                            </a>
+
+                        </li>
+
+                        <!-- SALES -->
+
+                        <li class="nav-item">
+
+                            <a class="nav-link"
+                               asp-controller="Sales"
+                               asp-action="Index">
+
+                                Sales
+
+                            </a>
+
+                        </li>
+
+                        <!-- ADMIN PANEL -->
+                        @if (userRole == "Admin")
+                        {
+                            <li class="nav-item">
+
+                                <a class="nav-link text-warning fw-bold"
+                                   asp-controller="Admin"
+                                   asp-action="Index">
+
+                                    Admin Panel
+
+                                </a>
+
+                            </li>
+                        }
+
+                        <!-- LOGIN / REGISTER -->
+                        @if (string.IsNullOrEmpty(userName))
+                        {
+                            <li class="nav-item">
+
+                                <a class="nav-link"
+                                   asp-controller="Account"
+                                   asp-action="Login">
+
+                                    Login
+
+                                </a>
+
+                            </li>
+
+                            <li class="nav-item">
+
+                                <a class="nav-link"
+                                   asp-controller="Customers"
+                                   asp-action="Create">
+
+                                    Register
+
+                                </a>
+
+                            </li>
+                        }
+
+                        <!-- LOGOUT -->
+                        else
+                        {
+                        <li class="nav-item">
+
+                            <a class="nav-link text-danger fw-bold"
+                               asp-controller="Account"
+                               asp-action="Logout">
+
+                                Logout
+
+                            </a>
+
+                        </li>
+                        }
+
+                        <!-- API -->
+
                         <li class="nav-item">
 
                             <a class="nav-link"
@@ -189,6 +314,21 @@
                             </a>
 
                         </li>
+
+                        <!-- USER INFO -->
+                        @if (!string.IsNullOrEmpty(userName))
+                        {
+                            <li class="nav-item">
+
+                                <div class="user-badge">
+
+                                    👤 @userName
+                                    (@userRole)
+
+                                </div>
+
+                            </li>
+                        }
 
                     </ul>
 
@@ -205,6 +345,22 @@
     <div class="container-custom">
 
         <main role="main">
+
+            <!-- SUCCESS ALERT -->
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show rounded-4 shadow-sm mb-4"
+                     role="alert">
+
+                    @TempData["SuccessMessage"]
+
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="alert">
+                    </button>
+
+                </div>
+            }
 
             @RenderBody()
 
