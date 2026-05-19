@@ -1,0 +1,259 @@
+﻿@{
+    ViewData["Title"] = "Home";
+}
+
+<div class="container py-5">
+
+    <!-- HERO SECTION -->
+
+    <div class="text-center mb-5">
+
+        <h1 class="display-2 fw-bold text-dark">
+
+            Vehicle Parts Management System
+
+        </h1>
+
+        <p class="lead text-secondary mt-4 fs-4">
+
+            A modern ASP.NET Core MVC + Web API application
+            for managing vehicle spare parts, suppliers,
+            stock quantity and inventory operations efficiently.
+
+        </p>
+
+    </div>
+
+    <!-- MAIN MODULES -->
+
+    <div class="row g-4">
+
+        <!-- PARTS MODULE -->
+
+        <div class="col-lg-6">
+
+            <div class="card border-0 shadow-lg rounded-5 h-100">
+
+                <div class="card-body text-center p-5">
+
+                    <div style="font-size:75px;">
+                        📦
+                    </div>
+
+                    <h2 class="fw-bold mt-4">
+
+                        Parts Management
+
+                    </h2>
+
+                    <p class="text-muted mt-4 fs-5">
+
+                        Manage vehicle spare parts, pricing,
+                        inventory stock quantity and supplier allocation efficiently.
+
+                    </p>
+
+                    <a asp-controller="Parts"
+                       asp-action="Index"
+                       class="btn btn-primary btn-lg rounded-pill px-5 mt-4 shadow-sm">
+
+                        Open Parts Module
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- SUPPLIERS MODULE -->
+
+        <div class="col-lg-6">
+
+            <div class="card border-0 shadow-lg rounded-5 h-100">
+
+                <div class="card-body text-center p-5">
+
+                    <div style="font-size:75px;">
+                        🚚
+                    </div>
+
+                    <h2 class="fw-bold mt-4">
+
+                        Suppliers Management
+
+                    </h2>
+
+                    <p class="text-muted mt-4 fs-5">
+
+                        Store supplier records, contact information,
+                        addresses and maintain supplier relationships.
+
+                    </p>
+
+                    <a asp-controller="Suppliers"
+                       asp-action="Index"
+                       class="btn btn-dark btn-lg rounded-pill px-5 mt-4 shadow-sm">
+
+                        Open Suppliers Module
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- DASHBOARD STATS -->
+
+    <div class="mt-5">
+
+        <div class="mb-4">
+
+            <h2 class="fw-bold text-dark">
+
+                Dashboard Statistics
+
+            </h2>
+
+            <p class="text-secondary fs-5">
+
+                Overview of current inventory and supplier records.
+
+            </p>
+
+        </div>
+
+        <div class="row g-4">
+
+            <!-- TOTAL PARTS -->
+
+            <div class="col-md-4">
+
+                <div class="card border-0 shadow-sm rounded-5 text-center p-4 h-100">
+
+                    <div style="font-size:60px;">
+                        📦
+                    </div>
+
+                    <h1 class="fw-bold mt-3 text-primary">
+
+                        @ViewBag.TotalParts
+
+                    </h1>
+
+                    <p class="text-muted fs-5">
+
+                        Total Parts
+
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- TOTAL SUPPLIERS -->
+
+            <div class="col-md-4">
+
+                <div class="card border-0 shadow-sm rounded-5 text-center p-4 h-100">
+
+                    <div style="font-size:60px;">
+                        🚚
+                    </div>
+
+                    <h1 class="fw-bold mt-3 text-dark">
+
+                        @ViewBag.TotalSuppliers
+
+                    </h1>
+
+                    <p class="text-muted fs-5">
+
+                        Total Suppliers
+
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- TOTAL STOCK -->
+
+            <div class="col-md-4">
+
+                <div class="card border-0 shadow-sm rounded-5 text-center p-4 h-100">
+
+                    <div style="font-size:60px;">
+                        📊
+                    </div>
+
+                    <h1 class="fw-bold mt-3 text-success">
+
+                        @ViewBag.TotalQuantity
+
+                    </h1>
+
+                    <p class="text-muted fs-5">
+
+                        Total Stock Quantity
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- TECHNOLOGY SECTION -->
+
+    <div class="mt-5">
+
+        <div class="card border-0 shadow-sm rounded-5 p-5">
+
+            <div class="text-center">
+
+                <h2 class="fw-bold mb-4">
+
+                    Technologies Used
+
+                </h2>
+
+                <div class="d-flex flex-wrap justify-content-center gap-3">
+
+                    <span class="badge bg-dark fs-6 px-4 py-3 rounded-pill">
+                        ASP.NET Core MVC
+                    </span>
+
+                    <span class="badge bg-primary fs-6 px-4 py-3 rounded-pill">
+                        Web API
+                    </span>
+
+                    <span class="badge bg-success fs-6 px-4 py-3 rounded-pill">
+                        SQL Server
+                    </span>
+
+                    <span class="badge bg-secondary fs-6 px-4 py-3 rounded-pill">
+                        Entity Framework Core
+                    </span>
+
+                    <span class="badge bg-danger fs-6 px-4 py-3 rounded-pill">
+                        Bootstrap 5
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

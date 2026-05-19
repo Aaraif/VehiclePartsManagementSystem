@@ -1,0 +1,104 @@
+@model VehiclePartsManagementSystem.Models.Part
+
+@{
+    ViewData["Title"] = "Part Details";
+}
+
+<div class="container py-5">
+
+    <div class="card border-0 shadow-lg rounded-5 p-5">
+
+        <h1 class="display-5 fw-bold text-dark mb-4">
+            Part Details
+        </h1>
+
+        <p class="text-secondary fs-5 mb-5">
+            Detailed information about the selected vehicle part.
+        </p>
+
+        <div class="card bg-light border-0 rounded-4 p-4">
+
+            <!-- PART NAME -->
+
+            <div class="mb-4">
+
+                <h5 class="text-secondary">
+                    Part Name
+                </h5>
+
+                <h2 class="fw-bold">
+                    @Model.PartName
+                </h2>
+
+            </div>
+
+            <!-- QUANTITY -->
+
+            <div class="mb-4">
+
+                <h5 class="text-secondary">
+                    Quantity
+                </h5>
+
+                <h3 class="fw-semibold">
+                    @Model.Quantity
+                </h3>
+
+            </div>
+
+            <!-- PRICE -->
+
+            <div class="mb-4">
+
+                <h5 class="text-secondary">
+                    Price
+                </h5>
+
+                <h3 class="fw-bold text-success">
+                    $@Model.Price
+                </h3>
+
+            </div>
+
+            <!-- SUPPLIER -->
+
+            <div class="mb-4">
+
+                <h5 class="text-secondary">
+                    Supplier
+                </h5>
+
+                <h3 class="fw-semibold">
+
+                    @(Model.Supplier != null
+                        ? Model.Supplier.SupplierName
+                        : "No Supplier Assigned")
+
+                </h3>
+
+            </div>
+
+        </div>
+
+        <div class="d-flex gap-3 mt-5">
+
+            <a asp-action="Edit"
+               asp-route-id="@Model.Id"
+               class="btn btn-primary btn-lg rounded-4 px-4">
+
+                Edit
+
+            </a>
+
+            <a asp-action="Index"
+               class="btn btn-outline-secondary btn-lg rounded-4 px-4">
+
+                Back
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>

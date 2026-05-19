@@ -1,0 +1,171 @@
+@model IEnumerable<VehiclePartsManagementSystem.Models.Supplier>
+
+@{
+    ViewData["Title"] = "Suppliers";
+}
+
+<div class="container py-5">
+
+    <!-- PAGE HEADER -->
+
+    <div class="mb-5">
+
+        <h1 class="display-3 fw-bold text-dark">
+            Suppliers Management
+        </h1>
+
+        <p class="fs-4 text-secondary mt-3">
+            Manage supplier records, contact details and address information efficiently.
+        </p>
+
+    </div>
+
+    <!-- SEARCH + BUTTON -->
+
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+
+        <div>
+
+            <a asp-action="Create"
+               class="btn btn-primary btn-lg rounded-4 px-4 shadow-sm">
+
+                + Add Supplier
+
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- TABLE CARD -->
+
+    <div class="card border-0 shadow-lg rounded-5 overflow-hidden">
+
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle mb-0">
+
+                <!-- TABLE HEADER -->
+
+                <thead class="table-dark">
+
+                    <tr class="fs-5">
+
+                        <th class="ps-4 py-4">
+                            Supplier Name
+                        </th>
+
+                        <th class="py-4">
+                            Contact Number
+                        </th>
+
+                        <th class="py-4">
+                            Address
+                        </th>
+
+                        <th class="text-center py-4 pe-4">
+                            Actions
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <!-- TABLE BODY -->
+
+                <tbody>
+
+                    @if (Model.Any())
+                    {
+                        @foreach (var item in Model)
+                        {
+                            <tr class="fs-5">
+
+                                <!-- SUPPLIER NAME -->
+
+                                <td class="ps-4 fw-semibold">
+
+                                    @item.SupplierName
+
+                                </td>
+
+                                <!-- CONTACT -->
+
+                                <td>
+
+                                    <span class="badge bg-secondary fs-6 px-3 py-2 rounded-pill">
+
+                                        @item.ContactNumber
+
+                                    </span>
+
+                                </td>
+
+                                <!-- ADDRESS -->
+
+                                <td class="text-muted">
+
+                                    @item.Address
+
+                                </td>
+
+                                <!-- ACTION BUTTONS -->
+
+                                <td class="text-center pe-4">
+
+                                    <div class="d-flex justify-content-center gap-2 flex-wrap">
+
+                                        <a asp-action="Edit"
+                                           asp-route-id="@item.Id"
+                                           class="btn btn-primary rounded-4 px-3 shadow-sm">
+
+                                            Edit
+
+                                        </a>
+
+                                        <a asp-action="Details"
+                                           asp-route-id="@item.Id"
+                                           class="btn btn-dark rounded-4 px-3 shadow-sm">
+
+                                            Details
+
+                                        </a>
+
+                                        <a asp-action="Delete"
+                                           asp-route-id="@item.Id"
+                                           class="btn btn-danger rounded-4 px-3 shadow-sm">
+
+                                            Delete
+
+                                        </a>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+
+                            <td colspan="4"
+                                class="text-center py-5 fs-4 text-muted">
+
+                                No suppliers available.
+
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
