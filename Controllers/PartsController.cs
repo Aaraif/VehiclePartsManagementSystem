@@ -14,6 +14,7 @@ public class PartsController : Controller
     }
 
     // GET: PARTS
+
     public async Task<IActionResult> Index(string searchString)
     {
         var parts = _context.Parts
@@ -30,6 +31,7 @@ public class PartsController : Controller
     }
 
     // GET: PARTS/Details/5
+
     public async Task<IActionResult> Details(int? id)
     {
         if (id == null)
@@ -50,6 +52,7 @@ public class PartsController : Controller
     }
 
     // GET: PARTS/Create
+
     public IActionResult Create()
     {
         ViewBag.SupplierId =
@@ -61,8 +64,10 @@ public class PartsController : Controller
     }
 
     // POST: PARTS/Create
+
     [HttpPost]
     [ValidateAntiForgeryToken]
+
     public async Task<IActionResult> Create(
         [Bind("Id,PartName,Quantity,Price,SupplierId")] Part part)
     {
@@ -71,6 +76,9 @@ public class PartsController : Controller
             _context.Add(part);
 
             await _context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] =
+                "Part created successfully!";
 
             return RedirectToAction(nameof(Index));
         }
@@ -85,6 +93,7 @@ public class PartsController : Controller
     }
 
     // GET: PARTS/Edit/5
+
     public async Task<IActionResult> Edit(int? id)
     {
         if (id == null)
@@ -109,8 +118,10 @@ public class PartsController : Controller
     }
 
     // POST: PARTS/Edit/5
+
     [HttpPost]
     [ValidateAntiForgeryToken]
+
     public async Task<IActionResult> Edit(
         int? id,
         [Bind("Id,PartName,Quantity,Price,SupplierId")] Part part)
@@ -138,6 +149,9 @@ public class PartsController : Controller
                 throw;
             }
 
+            TempData["SuccessMessage"] =
+                "Part updated successfully!";
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -151,6 +165,7 @@ public class PartsController : Controller
     }
 
     // GET: PARTS/Delete/5
+
     public async Task<IActionResult> Delete(int? id)
     {
         if (id == null)
@@ -171,8 +186,10 @@ public class PartsController : Controller
     }
 
     // POST: PARTS/Delete/5
+
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
+
     public async Task<IActionResult> DeleteConfirmed(int? id)
     {
         var part = await _context.Parts.FindAsync(id);
@@ -184,8 +201,13 @@ public class PartsController : Controller
 
         await _context.SaveChangesAsync();
 
+        TempData["SuccessMessage"] =
+            "Part deleted successfully!";
+
         return RedirectToAction(nameof(Index));
     }
+
+    // EXISTS CHECK
 
     private bool PartExists(int? id)
     {

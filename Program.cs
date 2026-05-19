@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 using VehiclePartsManagementSystem.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,7 +10,12 @@ builder.Services.AddControllersWithViews();
 
 /* API + SWAGGER */
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler =
+            ReferenceHandler.IgnoreCycles;
+    });
 
 builder.Services.AddEndpointsApiExplorer();
 

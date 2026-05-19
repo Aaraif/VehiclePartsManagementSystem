@@ -1,214 +1,223 @@
-@model IEnumerable<VehiclePartsManagementSystem.Models.Part>
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using VehiclePartsManagementSystem.Models;
+using VehiclePartsManagementSystem.Data;
 
-@{
-    ViewData["Title"] = "Parts Inventory";
+public class PartsController : Controller
+{
+private readonly ApplicationDbContext _context;
+
+public PartsController(ApplicationDbContext context)
+{
+_context = context;
 }
 
-<div class="container py-5">
-
-    <!-- PAGE HEADER -->
-
-    <div class="mb-5">
-
-        <h1 class="display-3 fw-bold text-dark">
-            Parts Inventory
-        </h1>
-
-        <p class="fs-4 text-secondary mt-3">
-            Manage vehicle spare parts, stock quantity, pricing and supplier information efficiently.
-        </p>
-
-    </div>
-
-    <!-- SEARCH + BUTTON -->
-
-    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
-
-        <form asp-controller="Parts"
-              asp-action="Index"
-              method="get"
-              class="d-flex gap-2 flex-wrap">
-
-            <input type="text"
-                   name="searchString"
-                   class="form-control form-control-lg rounded-4 shadow-sm"
-                   placeholder="Search parts by name..."
-                   style="min-width:300px;" />
-
-            <button type="submit"
-                    class="btn btn-dark btn-lg rounded-4 px-4 shadow-sm">
-
-                Search
-
-            </button>
-
-        </form>
-
-        <a asp-action="Create"
-           class="btn btn-primary btn-lg rounded-4 px-4 shadow-sm">
-
-            + Add Part
-
-        </a>
-
-    </div>
-
-    <!-- TABLE CARD -->
-
-    <div class="card border-0 shadow-lg rounded-5 overflow-hidden">
-
-        <div class="table-responsive">
-
-            <table class="table table-hover align-middle mb-0">
-
-                <!-- TABLE HEADER -->
-
-                <thead class="table-dark">
-
-                    <tr class="fs-5">
-
-                        <th class="ps-4 py-4">
-                            Part Name
-                        </th>
-
-                        <th class="py-4">
-                            Quantity
-                        </th>
-
-                        <th class="py-4">
-                            Price
-                        </th>
-
-                        <th class="py-4">
-                            Supplier
-                        </th>
-
-                        <th class="text-center py-4 pe-4">
-                            Actions
-                        </th>
-
-                    </tr>
-
-                </thead>
-
-                <!-- TABLE BODY -->
-
-                <tbody>
-
-                    @if (Model.Any())
-                    {
-                        @foreach (var item in Model)
-                        {
-                            <tr class="fs-5">
-
-                                <!-- PART NAME -->
-
-                                <td class="ps-4 fw-semibold">
-
-                                    @item.PartName
-
-                                </td>
-
-                                <!-- QUANTITY -->
-
-                                <td>
-
-                                    <span class="badge bg-secondary fs-6 px-3 py-2 rounded-pill">
-
-                                        @item.Quantity
-
-                                    </span>
-
-                                </td>
-
-                                <!-- PRICE -->
-
-                                <td class="fw-bold text-success">
-
-                                    $@item.Price
-
-                                </td>
-
-                                <!-- SUPPLIER -->
-
-                                <td>
-
-                                    @if (item.Supplier != null)
-                                    {
-                                        <span class="badge bg-info text-dark fs-6 px-3 py-2 rounded-pill">
-
-                                            @item.Supplier.SupplierName
-
-                                        </span>
-                                    }
-                                    else
-                                    {
-                                        <span class="text-muted">
-
-                                            No Supplier
-
-                                        </span>
-                                    }
-
-                                </td>
-
-                                <!-- ACTION BUTTONS -->
-
-                                <td class="text-center pe-4">
-
-                                    <div class="d-flex justify-content-center gap-2 flex-wrap">
-
-                                        <a asp-action="Edit"
-                                           asp-route-id="@item.Id"
-                                           class="btn btn-primary rounded-4 px-3 shadow-sm">
-
-                                            Edit
-
-                                        </a>
-
-                                        <a asp-action="Details"
-                                           asp-route-id="@item.Id"
-                                           class="btn btn-dark rounded-4 px-3 shadow-sm">
-
-                                            Details
-
-                                        </a>
-
-                                        <a asp-action="Delete"
-                                           asp-route-id="@item.Id"
-                                           class="btn btn-danger rounded-4 px-3 shadow-sm">
-
-                                            Delete
-
-                                        </a>
-
-                                    </div>
-
-                                </td>
-
-                            </tr>
-                        }
-                    }
-                    else
-                    {
-                        <tr>
-
-                            <td colspan="5"
-                                class="text-center py-5 fs-4 text-muted">
-
-                                No parts available in inventory.
-
-                            </td>
-
-                        </tr>
-                    }
-
-                </tbody>
-
-            </table>
-
-        </div>
-
-    </div>
-
-</div>
+// GET: PARTS
+
+public async Task<IActionResult>
+Index(string searchString)
+{
+var parts = _context.Parts
+.Include(p => p.Supplier)
+.AsQueryable();
+
+if (!string.IsNullOrEmpty(searchString))
+{
+parts = parts.Where(s =>
+s.PartName.Contains(searchString));
+}
+
+return View(await parts.ToListAsync());
+}
+
+// GET: PARTS/Details/5
+
+public async Task<IActionResult>
+Details(int? id)
+{
+if (id == null)
+{
+return NotFound();
+}
+
+var part = await _context.Parts
+.Include(p => p.Supplier)
+.FirstOrDefaultAsync(m => m.Id == id);
+
+if (part == null)
+{
+return NotFound();
+}
+
+return View(part);
+}
+
+// GET: PARTS/Create
+
+public IActionResult Create()
+{
+ViewBag.SupplierId =
+new SelectList(_context.Suppliers,
+"Id",
+"SupplierName");
+
+return View();
+}
+
+// POST: PARTS/Create
+
+[HttpPost]
+[ValidateAntiForgeryToken]
+
+public async Task<IActionResult>
+Create(
+[Bind("Id,PartName,Quantity,Price,SupplierId")] Part part)
+{
+if (ModelState.IsValid)
+{
+_context.Add(part);
+
+await _context.SaveChangesAsync();
+
+TempData["SuccessMessage"] =
+"Part created successfully!";
+
+return RedirectToAction(nameof(Index));
+}
+
+ViewBag.SupplierId =
+new SelectList(_context.Suppliers,
+"Id",
+"SupplierName",
+part.SupplierId);
+
+return View(part);
+}
+
+// GET: PARTS/Edit/5
+
+public async Task<IActionResult>
+Edit(int? id)
+{
+if (id == null)
+{
+return NotFound();
+}
+
+var part = await _context.Parts.FindAsync(id);
+
+if (part == null)
+{
+return NotFound();
+}
+
+ViewBag.SupplierId =
+new SelectList(_context.Suppliers,
+"Id",
+"SupplierName",
+part.SupplierId);
+
+return View(part);
+}
+
+// POST: PARTS/Edit/5
+
+[HttpPost]
+[ValidateAntiForgeryToken]
+
+public async Task<IActionResult>
+Edit(
+int? id,
+[Bind("Id,PartName,Quantity,Price,SupplierId")] Part part)
+{
+if (id != part.Id)
+{
+return NotFound();
+}
+
+if (ModelState.IsValid)
+{
+try
+{
+_context.Update(part);
+
+await _context.SaveChangesAsync();
+}
+catch (DbUpdateConcurrencyException)
+{
+if (!PartExists(part.Id))
+{
+return NotFound();
+}
+
+throw;
+}
+
+TempData["SuccessMessage"] =
+"Part updated successfully!";
+
+return RedirectToAction(nameof(Index));
+}
+
+ViewBag.SupplierId =
+new SelectList(_context.Suppliers,
+"Id",
+"SupplierName",
+part.SupplierId);
+
+return View(part);
+}
+
+// GET: PARTS/Delete/5
+
+public async Task<IActionResult>
+Delete(int? id)
+{
+if (id == null)
+{
+return NotFound();
+}
+
+var part = await _context.Parts
+.Include(p => p.Supplier)
+.FirstOrDefaultAsync(m => m.Id == id);
+
+if (part == null)
+{
+return NotFound();
+}
+
+return View(part);
+}
+
+// POST: PARTS/Delete/5
+
+[HttpPost, ActionName("Delete")]
+[ValidateAntiForgeryToken]
+
+public async Task<IActionResult>
+DeleteConfirmed(int? id)
+{
+var part = await _context.Parts.FindAsync(id);
+
+if (part != null)
+{
+_context.Parts.Remove(part);
+}
+
+await _context.SaveChangesAsync();
+
+TempData["SuccessMessage"] =
+"Part deleted successfully!";
+
+return RedirectToAction(nameof(Index));
+}
+
+// EXISTS CHECK
+
+private bool PartExists(int? id)
+{
+return _context.Parts.Any(e => e.Id == id);
+}
+}
